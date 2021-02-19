@@ -16,11 +16,33 @@
                 <h1>Тик-так-бум</h1>
             </div>
             <div class="row">
+                <div class="number-of-players" id="playersNumber">
+                    Выбрать количество игроков:
+                    <button type="button" class="players btn btn-primary" id="onePlayer">1</button>
+                    <button type="button" class="players btn btn-primary" id="twoPlayer">2</button>
+                    <button type="button" class="players btn btn-primary" id="threePlayer">3</button>
+                    <button type="button" class="players btn btn-primary" id="fourPlayer">4</button>
+                    <button type="button" class="players btn btn-primary" id="fivePlayer">5</button>                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="game-start-stop" id="gameStartStop">                    
+                    <button type="button" class="btn btn-success" id="startGame">Старт игры</button>
+                    <button type="button" class="btn btn-danger" id="stopGame">Конец игры</button>         
+                </div>
+            </div>
+
+            <div class="row">
                 <span class="alert alert-primary" id="gameStatusField"></span>
             </div>
             <div class="row">
                 <div class="start-timer-output" id="startTimerOutput">
                     До старта игры осталось: <span id="gameTimer" class="starttimer">00:00</span> секнуд<span>
+                </div>
+            </div>
+            <div class="row">  
+                <div class="question-timer-output" id="questionTimerOutput">
+                    Время для подготовки к ответу: <span id="questionTimer" class="questiontimer">00:00</span> секнуд<span>
                 </div>
             </div>         
             <div class="row">

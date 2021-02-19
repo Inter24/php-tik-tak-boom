@@ -8,9 +8,11 @@ tikTakBoom = {
         textFieldAnswer2,
         gameTimer,
         startTimerOutput,
+        questionTimer,
+        questionTimerOutput,
     ) {
         this.boomTimer = 30;
-        this.countOfPlayers = 2;
+        //this.countOfPlayers = playersNumber;
         this.tasks = JSON.parse(tasks);
 
         this.timerField = timerField;
@@ -23,16 +25,27 @@ tikTakBoom = {
         this.gameTimer = gameTimer;
         this.startTimerOutput = startTimerOutput;
 
-        this.needRightAnswers = 15;        
+        this.needRightAnswers = 15;  
+
+        this.timeBeforeAnswer = 4 ;
+        this.questionTimer = questionTimer;
+        this.questionTimerOutput = questionTimerOutput;
+        this.questionTimerOutput.style.display = 'none';
+
+        this.status = 'stop';
     },
 
-    run() {
+    run(playersNum) {
+
+        this.gameStatusField.style.display = 'block';
+        this.startTimerOutput.style.display = 'block';
+
         this.state = 1;
-
-        this.rightAnswers = 0;
-
+        this.countOfPlayers = playersNum;
+        this.rightAnswers = 0;  
+        
         this.gameStartTimer();
-
+     
        // this.turnOn(); 
        // this.timer();        
     },
@@ -58,8 +71,10 @@ tikTakBoom = {
         if (this.rightAnswers < this.needRightAnswers) {
             if (this.tasks.length === 0) {
                 this.finish('lose');
-            } else {
-                this.turnOn();
+            } else {                
+               //this.turnOn(); 
+                this.status = 'stop';
+                this.questionTimerF();              
             }
         } else {
             this.finish('won');
@@ -96,26 +111,33 @@ tikTakBoom = {
         console.log(this);
     },
 
-    timer() {
-        if (this.state) {
-            this.boomTimer -= 1;
-            let sec = this.boomTimer % 60;
-            let min = (this.boomTimer - sec) / 60;
-            sec = (sec >= 10) ? sec : '0' + sec;
-            min = (min >= 10) ? min : '0' + min;
-            this.timerField.innerText = `${min}:${sec}`;
+    timer() {        
+        if (this.state) {           
 
-            if (this.boomTimer > 0) {
-                setTimeout(
-                    () => {
-                        this.timer()
-                    },
-                    1000,
-                )
-            } else {
-                this.finish('lose');
-            }
-        }
+          //  console.log(this.status);
+
+                if (this.status == 'start') {
+                    this.boomTimer -= 1;
+                } else {  
+                    this.boomTimer = this.boomTimer;
+                }
+                let sec = this.boomTimer % 60;
+                let min = (this.boomTimer - sec) / 60;
+                sec = (sec >= 10) ? sec : '0' + sec;
+                min = (min >= 10) ? min : '0' + min;
+                this.timerField.innerText = `${min}:${sec}`;
+
+                if (this.boomTimer > 0) {
+                    setTimeout(
+                        () => {
+                            this.timer(this.status)
+                        },
+                        1000,
+                    )
+                } else {
+                    this.finish('lose');
+                }          
+            }         
     },
 
     gameStartTimer() {     
@@ -140,10 +162,42 @@ tikTakBoom = {
             } else {
                 this.startTimerOutput.innerText = ''
                 this.gameStatusField.innerText = 'Игра началась!';
-                this.turnOn(); 
+                this.turnOn();                 
+                this.status = 'start';
                 this.timer();
             }
         }
 
     },
+
+    questionTimerF() {    
+        
+        this.questionTimerOutput.style.display = 'block';
+        
+
+        if (this.state) {
+            this.timeBeforeAnswer -= 1;
+            let sec = this.timeBeforeAnswer % 60;
+            let min = (this.timeBeforeAnswer - sec) / 60;
+            sec = (sec >= 10) ? sec : '0' + sec;
+            min = (min >= 10) ? min : '0' + min;
+            this.questionTimer.innerText = `${min}:${sec}`;
+
+            if (this.timeBeforeAnswer > 0) {
+                setTimeout(
+                    () => {
+                        this.questionTimerF()
+                    },
+                    1000,
+                )
+            } else {         
+                this.timeBeforeAnswer = 4 ;
+                this.questionTimerOutput.style.display = 'none'; 
+                this.turnOn(); 
+                this.status = 'start';
+            }
+        }
+
+    }
+
 }
