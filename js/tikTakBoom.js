@@ -9,10 +9,10 @@ tikTakBoom = {
         gameTimer,
         startTimerOutput,
         questionTimer,
-        questionTimerOutput,
+        questionTimerOutput
     ) {
-        this.boomTimer = 30;
-        //this.countOfPlayers = playersNumber;
+        
+        this.countOfPlayers = playersNumber;
         this.tasks = JSON.parse(tasks);
 
         this.timerField = timerField;
@@ -35,7 +35,7 @@ tikTakBoom = {
         this.status = 'stop';
     },
 
-    run(playersNum) {
+    run(playersNum, time) {
 
         this.gameStatusField.style.display = 'block';
         this.startTimerOutput.style.display = 'block';
@@ -43,9 +43,14 @@ tikTakBoom = {
         this.state = 1;
         this.countOfPlayers = playersNum;
         this.rightAnswers = 0;  
+        if (time > 0) {
+            this.boomTimer = time;
+        } else {
+            this.boomTimer = 30;
+        }
         
         this.gameStartTimer();
-     
+
        // this.turnOn(); 
        // this.timer();        
     },
@@ -65,8 +70,10 @@ tikTakBoom = {
         if (this.currentTask[value].result) {
             this.gameStatusField.innerText = 'Верно!';
             this.rightAnswers += 1;
+            this.boomTimer += 5;
         } else {
             this.gameStatusField.innerText = 'Неверно!';
+            this.boomTimer -= 5;
         }
         if (this.rightAnswers < this.needRightAnswers) {
             if (this.tasks.length === 0) {

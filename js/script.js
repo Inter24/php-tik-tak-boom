@@ -11,6 +11,8 @@ window.onload = function()
     const startGame = document.getElementById('startGame');
     const stopGame = document.getElementById('stopGame');
 
+    let timePlay = document.getElementById('timePlay');
+
     stopGame.style.display = 'none';
     document.getElementById('gameStatusField').style.display = 'none';
     document.getElementById('startTimerOutput').style.display = 'none';
@@ -27,7 +29,7 @@ window.onload = function()
         document.getElementById('gameTimer'),
         document.getElementById('startTimerOutput'),
         document.getElementById('questionTimer'),
-        document.getElementById('questionTimerOutput')
+        document.getElementById('questionTimerOutput'),
     )     
 
     onePlayer.addEventListener('click', () => { 
@@ -52,8 +54,11 @@ window.onload = function()
     });
 
     startGame.addEventListener('click', () => { 
-        playersNumberTxt.innerHTML = `Число игроков: ${playersNumber}`; 
-        tikTakBoom.run(playersNumber);
+        if (!playersNumber > 0) {
+            playersNumber = 2;
+        }
+        playersNumberTxt.innerHTML = `Число игроков: ${playersNumber}`;         
+        tikTakBoom.run(playersNumber, parseInt(timePlay.value));
         startGame.style.display = 'none';
         stopGame.style.display = 'block';
     });
